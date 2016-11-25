@@ -1,0 +1,76 @@
+/*
+||
+|| @file Clavier4x4.h
+|| @version 1
+|| @author Jonathan Courbon
+|| @contact jonathan.courbon@udamail.fr
+||
+|| @description
+|| | Cette librairie fournit une interface simple pour utiliser le clavier souple 4x4 touches (avec autocollants)
+|| | La librairie Keypad ne fonctionnait pas (touches d'une ligne non reconnus)
+||
+|| @license
+|| | This library is free software; you can redistribute it and/or
+|| | modify it under the terms of the GNU Lesser General Public
+|| | License as published by the Free Software Foundation; version
+|| | 2.1 of the License.
+|| |
+|| | This library is distributed in the hope that it will be useful,
+|| | but WITHOUT ANY WARRANTY; without even the implied warranty of
+|| | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+|| | Lesser General Public License for more details.
+|| |
+|| | You should have received a copy of the GNU Lesser General Public
+|| | License along with this library; if not, write to the Free Software
+|| | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+|| #
+||
+*/
+
+#ifndef CLAVIER4X4_H
+#define CLAVIER4X4_H
+
+// Arduino versioning.
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
+#include "WProgram.h"
+#endif
+
+#ifndef INPUT_PULLUP
+#warning "Using  pinMode() INPUT_PULLUP AVR emulation"
+#define INPUT_PULLUP 0x2
+#define pinMode(_pin, _mode) _mypinMode(_pin, _mode)
+#define _mypinMode(_pin, _mode)  \
+do {							 \
+	if(_mode == INPUT_PULLUP)	 \
+		pinMode(_pin, INPUT);	 \
+		digitalWrite(_pin, 1);	 \
+	if(_mode != INPUT_PULLUP)	 \
+		pinMode(_pin, _mode);	 \
+}while(0)
+#endif
+
+const char NO_KEY = '\0';
+
+class Clavier4x4 {
+public:
+
+	Clavier4x4(int row1,int row2,int row3,int row4,int col1,int col2,int col3,int col4);
+
+	void init();
+	char getKey();
+
+private:
+	int row[4];
+	int col[4];
+
+	char touches[4][4];
+};
+
+#endif
+
+/*
+|| @changelog
+|| #
+*/
